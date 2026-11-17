@@ -1,0 +1,48 @@
+[package]
+name = "blue-alert-sender"
+version = "0.1.0"
+edition = "2021"
+description = "블루 알림 수신기에 명령을 보내는 도구 (Windows 11, UI와 CLI)"
+build = "build.rs"
+
+[dependencies]
+eframe = "0.36.2"
+egui = "0.36.2"
+windows-future = "0.3"
+windows-collections = "0.3"
+
+# Windows의 블루투스(BLE) 기능과 콘솔 함수
+[dependencies.windows]
+version = "0.62"
+features = [
+    "Devices_Bluetooth",
+    "Devices_Bluetooth_Advertisement",
+    "Devices_Bluetooth_GenericAttributeProfile",
+    "Foundation",
+    "Foundation_Collections",
+    "Storage_Streams",
+    "Win32_Foundation",
+    "Win32_System_Console",
+    "Win32_System_SystemInformation",
+    "Win32_System_WinRT",
+]
+
+[build-dependencies]
+winresource = "0.1.31"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+
+# 글자 배치는 최적화 없이 느리므로, 개발 빌드에서도 의존 크레이트는 최적화한다.
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[package.metadata.winresource]
+ProductName = "blue-alert-sender"
+FileDescription = "블루 알림 수신기 명령 도구"
